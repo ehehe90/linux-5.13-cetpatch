@@ -85,6 +85,18 @@ int prctl_cet(int option, u64 arg2)
 		return handle_alloc_shstk(arg2);
 #endif
 
+	case ARCH_X86_CET_ENABLE
+		if (shstk->locked)
+			return -EPERM;
+
+		if (arg2 & ~GNU_PROPERTY_X86_FEATURE_1_VALID)
+			return -EINVAL;
+		if (arg2 & GNU_PROPERTY_X86_FEATURE_1_SHSTK)
+			return shstk_setup();
+		if (arg2 & GNU_PROPERTY_X86_FEATURE_1_IBT)
+			return ibt_setup();
+		return 0;
+
 	default:
 		return -ENOSYS;
 	}

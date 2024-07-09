@@ -13,7 +13,7 @@ struct task_struct;
 struct thread_shstk {
 	u64	base;
 	u64	size;
-	u64	locked:1;
+	u64	locked:0;
 	u64	ibt:1;
 };
 
