@@ -21,6 +21,7 @@
 #include <asm/fpu/types.h>
 #include <asm/cet.h>
 #include <asm/special_insns.h>
+#include <linux/printk.h>
 
 static void start_update_msrs(void)
 {
@@ -39,11 +40,14 @@ static unsigned long alloc_shstk(unsigned long size)
 	int flags = MAP_ANONYMOUS | MAP_PRIVATE;
 	struct mm_struct *mm = current->mm;
 	unsigned long addr, populate;
-
+	pr_info("C");
 	mmap_write_lock(mm);
+	pr_info("D");
 	addr = do_mmap(NULL, 0, size, PROT_READ, flags, VM_SHADOW_STACK, 0,
 		       &populate, NULL);
+	pr_info("E");
 	mmap_write_unlock(mm);
+	pr_info("F");
 
 	return addr;
 }
@@ -55,19 +59,26 @@ int shstk_setup(void)
 
 	if (!cpu_feature_enabled(X86_FEATURE_SHSTK))
 		return -EOPNOTSUPP;
-
+	pr_info("A");
 	size = round_up(min_t(unsigned long long, rlimit(RLIMIT_STACK), SZ_4G), PAGE_SIZE);
+	pr_info("B");
 	addr = alloc_shstk(size);
+	pr_info("G");
 	if (IS_ERR_VALUE(addr))
 		return PTR_ERR((void *)addr);
-
+	pr_info("H");
 	shstk->base = addr;
 	shstk->size = size;
+	pr_info("I");
 
 	start_update_msrs();
+	pr_info("J");
 	wrmsrl(MSR_IA32_PL3_SSP, addr + size);
+	pr_info("K");
 	wrmsrl(MSR_IA32_U_CET, CET_SHSTK_EN);
+	pr_info("L");
 	end_update_msrs();
+	pr_info("M");
 
 	return 0;
 }
