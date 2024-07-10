@@ -856,18 +856,18 @@ int arch_setup_elf_property(struct arch_elf_state *state)
 #ifdef CONFIG_X86_SHADOW_STACK
 	memset(&current->thread.shstk, 0, sizeof(struct thread_shstk));
 
-	if (cpu_feature_enabled(X86_FEATURE_SHSTK)) {
-		if (state->gnu_property & GNU_PROPERTY_X86_FEATURE_1_SHSTK)
-			r = shstk_setup();
-	}
+	// if (cpu_feature_enabled(X86_FEATURE_SHSTK)) {
+	// 	if (state->gnu_property & GNU_PROPERTY_X86_FEATURE_1_SHSTK)
+	// 		r = shstk_setup();
+	// }
 
-	if (r < 0)
-		return r;
+	// if (r < 0)
+	// 	return r;
 
-	if (cpu_feature_enabled(X86_FEATURE_IBT)) {
-		if (state->gnu_property & GNU_PROPERTY_X86_FEATURE_1_IBT)
-			r = ibt_setup();
-	}
+	// if (cpu_feature_enabled(X86_FEATURE_IBT)) {
+	// 	if (state->gnu_property & GNU_PROPERTY_X86_FEATURE_1_IBT)
+	// 		r = ibt_setup();
+	// }
 #endif
 
 	return r;
