@@ -9,7 +9,6 @@
 #include <linux/processor.h>
 #include <asm/prctl.h>
 #include <asm/cet.h>
-#include <linux/printk.h>
 
 /* See Documentation/x86/intel_cet.rst. */
 
@@ -91,7 +90,6 @@ int prctl_cet(int option, u64 arg2)
 		if (arg2 & ~GNU_PROPERTY_X86_FEATURE_1_VALID)
 			return -EINVAL;
 		if (arg2 & GNU_PROPERTY_X86_FEATURE_1_SHSTK) {
-			pr_info("Entering shstk_setup");
 			return shstk_setup();
 		}
 		if (arg2 & GNU_PROPERTY_X86_FEATURE_1_IBT)
